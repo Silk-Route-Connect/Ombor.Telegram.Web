@@ -1,112 +1,87 @@
-### ✅ `README.md` (For Template App)
+# 📦 Ombor Telegram Web
 
-````md
-# Next.js Template with Tailwind CSS & shadcn/ui
-
-This is a modern and clean boilerplate built with:
-
-- ⚡ [Next.js](https://nextjs.org) – The React Framework
-- 🎨 [Tailwind CSS](https://tailwindcss.com) – Utility-first CSS framework
-- 🧩 [shadcn/ui](https://ui.shadcn.com) – Beautiful, customizable UI components
-
-> Perfect for building modern web apps with speed and consistency.
+Modern warehouse management web app built with **Next.js 15**, **React 19**, **Tailwind v4**, and **shadcn/ui**.  
+Deployed on [Vercel](https://ombor-telegram-web.vercel.app).
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Tech Stack
 
-First, clone the repo and install dependencies:
+- ⚡ [Next.js 15](https://nextjs.org) – React framework
+- ⚛️ [React 19](https://react.dev)
+- 🎨 [Tailwind CSS v4](https://tailwindcss.com) – Utility-first CSS
+- 🧩 [shadcn/ui](https://ui.shadcn.com) – Customizable UI components
+- 🔥 [Framer Motion](https://www.framer.com/motion/) – Animations
+- 📊 [Recharts](https://recharts.org/) – Charts & graphs
+- 🌐 [TanStack Query](https://tanstack.com/query) – Data fetching & caching
+- 🔒 [Zod](https://zod.dev) + [React Hook Form](https://react-hook-form.com) – Form validation
+
+---
+
+## 🛠️ Getting Started
+
+Clone the repository and install dependencies:
 
 ```bash
-git clone https://github.com/MuxsinjonCoder/next-js15-tailwind-v4-shadcn-template.git my-app
-cd my-app
-yarn install
+git clone https://github.com/Silk-Route-Connect/Ombor.Telegram.Web.git
+cd Ombor.Telegram.Web
+npm install  # or yarn install
 ```
-````
 
-Then, run the development server:
+Run the development server:
 
 ```bash
-yarn dev
+npm run dev  # or yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+App will be available at [http://localhost:4200](http://localhost:4200)
 
 ---
 
 ## 📁 Project Structure
 
 ```bash
-app/                # App router (Next.js 13+)
-components/         # Reusable UI components (with shadcn/ui)
-lib/                # Utility functions and helpers
-styles/             # Global styles and Tailwind config
-public/             # Static files
+src/app/             # Next.js App Router pages
+src/components/      # Reusable components (UI, layouts, features)
+src/hooks/           # Custom React hooks
+src/config/          # API endpoints, storage, request utils
+src/constants/       # Static data/constants
+public/              # Static assets (images, logos)
 ```
-
----
-
-## 🧱 Included Features
-
-- ✅ App Router (Next.js 13+)
-- ✅ Tailwind CSS with custom config
-- ✅ shadcn/ui setup and configured
-- ✅ Dark mode support
-- ✅ Utility-first and accessible component structure
-- ✅ Prettier & ESLint configured
-
----
-
-## 🧩 UI Components (shadcn/ui)
-
-To add a new component:
-
-```bash
-npx shadcn-ui@latest add button
-```
-
-You can customize components in the `components/ui/` folder after installation.
 
 ---
 
 ## 🛠️ Scripts
 
-| Command       | Description               |
-| ------------- | ------------------------- |
-| `yarn dev`    | Run development server    |
-| `yarn build`  | Create production build   |
-| `yarn lint`   | Run linting               |
-| `yarn format` | Format code with Prettier |
+| Command         | Description             |
+| --------------- | ----------------------- |
+| `npm run dev`   | Run development server  |
+| `npm run build` | Create production build |
+| `npm run start` | Run production server   |
+| `npm run lint`  | Run ESLint              |
 
 ---
 
-## 📦 Deploy
+## 🌍 Deployment
 
-This template is ready for deployment on platforms like:
-
-- [Vercel](https://vercel.com)
-- [Netlify](https://netlify.com)
-
-For Vercel:
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new)
+Project is deployed on **Vercel**:  
+👉 [https://ombor-telegram-web.vercel.app](https://ombor-telegram-web.vercel.app)
 
 ---
 
-## 📚 Learn More
+## 📦 Repository
 
-- [Next.js Documentation](https://nextjs.org/docs)
-- [Tailwind CSS Docs](https://tailwindcss.com/docs)
-- [shadcn/ui Docs](https://ui.shadcn.com/docs)
+- GitHub Repo: [Ombor.Telegram.Web](https://github.com/Silk-Route-Connect/Ombor.Telegram.Web)
 
 ---
 
-## 🧑‍💻 Author
+## 👨‍💻 Author
 
-Built with ❤️ by Muxsinjon(https://github.com/MuxsinjonCoder)
+Built with ❤️ by [Muxsinjon](https://github.com/MuxsinjonCoder)  
+🌐 Personal site: [muxsinjon.cv](https://muxsinjon.cv)
 
 ---
 
 ## 📝 License
 
-MIT © [Your Name](https://github.com/MuxsinjonCoder)
+MIT © [Silk-Route-Connect](https://github.com/Silk-Route-Connect)
