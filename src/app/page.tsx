@@ -3,6 +3,9 @@ import DashboardNumber from "@/components/pages/dashboard/dashboard-number";
 import { TopActiveUsers } from "@/components/pages/dashboard/top-active-users";
 import { UsersVisitedMost } from "@/components/pages/dashboard/users-visited-most";
 import { VisitorsByAge } from "@/components/pages/dashboard/visitors-by-age";
+import HomeCarousel from "@/components/pages/home/carousel";
+import MenuSlider from "@/components/pages/home/menu-slider";
+import ShowMenuProducts from "@/components/pages/home/show-menu-products";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -55,17 +58,9 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <>
-      <div>
-        <DashboardNumber />
-        <ChartAreaInteractive />
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-5">
-          <TopActiveUsers />
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            <VisitorsByAge />
-            <UsersVisitedMost />
-          </div>
-        </div>
-      </div>
+      <HomeCarousel />
+      <MenuSlider />
+      <ShowMenuProducts />
     </>
   );
 }

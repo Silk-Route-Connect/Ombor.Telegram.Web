@@ -24,7 +24,7 @@ export default function AppHeader() {
   const [searchValue, setSearchValue] = useState("");
 
   return (
-    <div className="flex items-center justify-between gap-4 py-2 border-b mb-5">
+    <div className="flex items-center justify-between gap-4 py-2 border-b shadow-md roudned px-3 rounded-b-xl">
       <SidebarTrigger />
       <Search setSearchValue={setSearchValue} searchValue={searchValue} />
       <div className="flex items-center gap-4">
