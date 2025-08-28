@@ -2,7 +2,9 @@ import axios from "axios";
 import Cookies from "js-cookie";
 
 const request = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || "https://mern.uz/api",
+  baseURL:
+    process.env.NEXT_PUBLIC_API_URL ||
+    "https://miraziz-002-site1.ktempurl.com/api",
   // baseURL: "http://localhost:5000/api",
   headers: {
     "Content-Type": "application/json",

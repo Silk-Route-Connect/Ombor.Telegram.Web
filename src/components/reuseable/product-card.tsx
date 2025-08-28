@@ -11,38 +11,35 @@ import {
 } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import Image from "next/image";
 import { Minus, Plus, ShoppingCart } from "lucide-react";
 import { motion } from "framer-motion";
+import { GotProductTypes } from "@/types/products";
+import noImg from "@/assets/no-image.png";
 
-type Product = {
-  id: string;
-  image: any;
-  title: string;
-  description: string;
-  amount: number;
-};
-
-export default function ProductCard({ product }: { product: Product }) {
+export default function ProductCard({ product }: { product: GotProductTypes }) {
   const [open, setOpen] = React.useState(false);
   const [count, setCount] = React.useState(0);
   const [inputValue, setInputValue] = React.useState("0");
+  const [slideIndex, setSlideIndex] = React.useState(0);
 
-  const total = product.amount * count;
+  const total = Number(product.salePrice || 0) * count;
+  const images = product?.images?.length
+    ? product.images
+    : [{ thumbnailUrl: noImg.src }];
 
-  const handleAddClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (count === 0) {
-      setCount(1);
-      setInputValue("1");
-    } else {
-      setOpen(true);
-    }
+  React.useEffect(() => setInputValue(count.toString()), [count]);
+
+  const nextSlide = () => setSlideIndex((prev) => (prev + 1) % images.length);
+  const prevSlide = () =>
+    setSlideIndex((prev) => (prev - 1 + images.length) % images.length);
+
+  let startX = 0;
+  const onTouchStart = (e: React.TouchEvent) => (startX = e.touches[0].clientX);
+  const onTouchEnd = (e: React.TouchEvent) => {
+    const endX = e.changedTouches[0].clientX;
+    if (endX - startX > 50) prevSlide();
+    else if (startX - endX > 50) nextSlide();
   };
-
-  React.useEffect(() => {
-    setInputValue(count.toString());
-  }, [count]);
 
   return (
     <>
@@ -51,26 +48,39 @@ export default function ProductCard({ product }: { product: Product }) {
         className="group cursor-pointer p-0 hover:shadow-md hover:scale-[1.01] transition-all duration-300 border border-gray-200/60 hover:border-primary/40 bg-white dark:bg-gray-900 overflow-hidden rounded-xl flex flex-col"
       >
         <CardHeader className="p-0 relative flex-shrink-0">
-          <div className="relative overflow-hidden rounded-t-xl">
-            <Image
-              src={product.image}
-              alt={product.title}
-              width={300}
-              height={200}
+          <div
+            className="relative overflow-hidden rounded-t-xl"
+            onTouchStart={onTouchStart}
+            onTouchEnd={onTouchEnd}
+          >
+            <img
+              src={images[slideIndex].thumbnailUrl ?? noImg.src}
+              alt={product.name}
+              onError={(e) => (e.currentTarget.src = noImg.src)}
               className="w-full h-32 object-cover transition-transform duration-500 group-hover:scale-105"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <div className="absolute bottom-1 left-0 right-0 flex justify-center space-x-1">
+              {images.map((_, i) => (
+                <span
+                  key={i}
+                  className={`w-2 h-2 rounded-full ${
+                    i === slideIndex
+                      ? "bg-primary"
+                      : "bg-gray-300 dark:bg-gray-600"
+                  }`}
+                />
+              ))}
+            </div>
           </div>
         </CardHeader>
 
         <CardContent className="p-2 flex-1 flex flex-col">
           <CardTitle className="text-xs font-semibold text-gray-900 dark:text-white line-clamp-2 group-hover:text-primary transition-colors leading-snug mb-1 flex-1">
-            {product.title}
+            {product.name}
           </CardTitle>
-
           <div className="flex items-center justify-between mt-auto">
             <p className="text-sm font-bold text-primary">
-              {product.amount.toLocaleString()} so'm
+              {product.salePrice.toLocaleString()} so'm
             </p>
           </div>
 
@@ -87,7 +97,13 @@ export default function ProductCard({ product }: { product: Product }) {
                 variant="outline"
                 size="sm"
                 className="w-full h-7 mt-2 text-[11px] border-primary/30 hover:border-primary hover:bg-primary hover:text-white rounded-lg transition-all duration-300"
-                onClick={handleAddClick}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (count === 0) {
+                    setCount(1);
+                    setInputValue("1");
+                  } else setOpen(true);
+                }}
               >
                 <Plus className="h-3 w-3 mr-1" />
                 Qo'shish
@@ -135,22 +151,36 @@ export default function ProductCard({ product }: { product: Product }) {
       </Card>
 
       <Drawer open={open} onOpenChange={setOpen}>
-        <DrawerContent className="max-h-[92vh] bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 flex flex-col rounded-t-2xl">
+        <DrawerContent className="max-h-[98vh] bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 flex flex-col rounded-t-2xl">
           <div className="mx-auto w-full max-w-md h-full flex flex-col overflow-hidden">
             <div className="flex-1 overflow-y-auto overscroll-contain px-3">
               <DrawerHeader className="pt-4">
-                <div className="relative overflow-hidden rounded-xl mb-3 shadow-sm">
-                  <Image
-                    src={product.image}
-                    alt={product.title}
-                    width={600}
-                    height={300}
-                    className="w-full h-44 object-cover"
+                <div
+                  className="relative overflow-hidden rounded-xl mb-3 shadow-sm"
+                  onTouchStart={onTouchStart}
+                  onTouchEnd={onTouchEnd}
+                >
+                  <img
+                    src={images[slideIndex].thumbnailUrl ?? noImg.src}
+                    alt={product.name}
+                    onError={(e) => (e.currentTarget.src = noImg.src)}
+                    className="w-full h-48 object-cover transition-transform duration-500"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+                  <div className="absolute bottom-1 left-0 right-0 flex justify-center space-x-1">
+                    {images.map((_, i) => (
+                      <span
+                        key={i}
+                        className={`w-2 h-2 rounded-full ${
+                          i === slideIndex
+                            ? "bg-primary"
+                            : "bg-gray-300 dark:bg-gray-600"
+                        }`}
+                      />
+                    ))}
+                  </div>
                 </div>
                 <DrawerTitle className="text-lg font-bold text-gray-900 dark:text-white leading-snug">
-                  {product.title}
+                  {product.name}
                 </DrawerTitle>
                 <DrawerDescription className="text-xs text-gray-600 dark:text-gray-300 mt-2 leading-relaxed">
                   {product.description}
@@ -160,7 +190,7 @@ export default function ProductCard({ product }: { product: Product }) {
                     Narxi:
                   </span>
                   <span className="text-lg font-bold text-primary">
-                    {product.amount.toLocaleString()} so'm
+                    {product.salePrice.toLocaleString()} so'm
                   </span>
                 </div>
               </DrawerHeader>
@@ -178,7 +208,7 @@ export default function ProductCard({ product }: { product: Product }) {
                 </Button>
               ) : (
                 <div className="space-y-3">
-                  <div className="flex items-center justify-center gap-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
+                  <div className="flex w-full items-center justify-center gap-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
                     <Button
                       variant="outline"
                       size="icon"
@@ -195,7 +225,7 @@ export default function ProductCard({ product }: { product: Product }) {
                         setInputValue(e.target.value);
                         setCount(Math.max(val, 0));
                       }}
-                      className="w-12 text-center text-lg font-bold border-none bg-transparent focus:outline-none text-gray-900 dark:text-white"
+                      className="w-32 py-1 outline rounded-full  text-center text-lg font-bold border-none bg-transparent focus:outline-none text-gray-900 dark:text-white"
                     />
                     <Button
                       variant="outline"

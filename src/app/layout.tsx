@@ -17,60 +17,13 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "Modern Next.js Template for CRM, ERP & Admin Panels",
-  description:
-    "High-performance Next.js template featuring Tailwind CSS v4, latest ShadCN UI (23.07.2025), and Framer Motion. Built by Muxsinjon Maxsudovich, optimized for building scalable CRM, ERP, and admin dashboards with best-in-class UI and SEO structure.",
-  keywords: [
-    "Next.js template",
-    "Tailwind CSS v4",
-    "ShadCN UI 2025",
-    "Framer Motion",
-    "CRM template",
-    "ERP template",
-    "Admin panel",
-    "React dashboard",
-    "SEO optimized",
-    "Muxsinjon Maxsudovich",
-  ],
-  authors: [{ name: "Muxsinjon Maxsudovich", url: "https://muxsinjon.cv" }],
-  creator: "Muxsinjon Maxsudovich",
-  publisher: "Muxsinjon Maxsudovich",
-  icons: "/logos/logo.png",
-  openGraph: {
-    title: "Modern Next.js Template for CRM, ERP & Admin Panels",
-    description:
-      "Next.js template using Tailwind CSS v4, ShadCN UI (23.07.2025), and Framer Motion. Perfect for CRM, ERP, and admin projects.",
-    url: "https://muxsinjon.cv",
-    siteName: "Next.js CRM Template",
-    images: [
-      {
-        url: "/logos/logo.png",
-        width: 1200,
-        height: 630,
-        alt: "Next.js Template Preview",
-      },
-    ],
-    locale: "en_US",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Modern Next.js Template for CRM, ERP & Admin Panels",
-    description:
-      "Built with Tailwind CSS v4, ShadCN UI, and Framer Motion. Optimized for modern web apps.",
-    images: ["/logos/logo.png"],
-    creator: "@muxsinjon",
-  },
-};
-
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased h-screen overflow-hidden flex`}
       >
@@ -78,7 +31,7 @@ export default function RootLayout({
           <AppSidebar />
           <main className="flex-1 h-full overflow-auto flex flex-col">
             <AppHeader />
-            <div className="flex-1 overflow-auto pt-5 flex flex-col items-center justify-between min-h-[88vh] px-3">
+            <div className="flex-1 bg-white overflow-auto pt-5 flex flex-col items-center justify-between min-h-[88vh] px-3">
               {children}
               {/* <AppFooter /> */}
             </div>
