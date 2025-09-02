@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import ProductCard from "@/components/reuseable/product-card";
 import { useGetList } from "@/hooks/query/useGetList";
 import { CATEGORIES, PRODUCTS } from "@/config/endpoints";
@@ -12,7 +12,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export default function ShowMenuProducts() {
   const sectionRefs = useRef<Record<string, HTMLElement | null>>({});
-  const [visibleCount, setVisibleCount] = useState<Record<string, number>>({});
 
   const { data: categoriesData, isLoading: loadingCategories } = useGetList<
     GotCategoryTypes[]
@@ -26,19 +25,12 @@ export default function ShowMenuProducts() {
     endpoint: PRODUCTS.GET_PRODUCTS,
   });
 
-  const handleShowMore = (categoryId: string, total: number) => {
-    setVisibleCount((prev) => ({
-      ...prev,
-      [categoryId]: total,
-    }));
-  };
-
   if (loadingCategories || loadingProducts) {
     return (
       <div className="space-y-12 w-full">
         {Array.from({ length: 3 }).map((_, sectionIdx) => (
           <section key={sectionIdx}>
-            <Skeleton className="h-8 w-48 mb-6" />
+            <Skeleton className="h-8 w-full mb-6" />
             <div className="grid gap-6 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
               {Array.from({ length: 8 }).map((_, idx) => (
                 <Skeleton key={idx} className="h-64 w-full rounded-lg" />
@@ -62,9 +54,6 @@ export default function ShowMenuProducts() {
 
             if (categoryProducts.length === 0) return null;
 
-            const count = visibleCount[String(category.id)] || 8;
-            const visibleProducts = categoryProducts.slice(0, count);
-
             return (
               <section
                 key={category.id}
@@ -74,32 +63,21 @@ export default function ShowMenuProducts() {
                 }}
                 className="mb-12 scroll-mt-24"
               >
-                <h2 className="text-2xl font-bold mb-6 capitalize">
-                  {category.name}
-                </h2>
+                <div className="flex flex-wrap items-center justify-between mb-6">
+                  <h2 className="text-2xl font-bold capitalize">
+                    {category.name}
+                  </h2>
+                  <Button variant="link" className="text-primary w-fit p-0">
+                    Barchasini ko'rish
+                  </Button>
+                </div>
                 <div className="grid gap-6 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                  {visibleProducts.map((product) => (
+                  {categoryProducts.map((product) => (
                     <motion.div key={product.id} layout>
                       <ProductCard product={product} />
                     </motion.div>
                   ))}
                 </div>
-
-                {count < categoryProducts.length && (
-                  <div className="flex justify-center mt-6">
-                    <Button
-                      variant="link"
-                      onClick={() =>
-                        handleShowMore(
-                          String(category.id),
-                          categoryProducts.length
-                        )
-                      }
-                    >
-                      Barchasini ko'rish
-                    </Button>
-                  </div>
-                )}
               </section>
             );
           })}

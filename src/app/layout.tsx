@@ -29,9 +29,9 @@ export default function RootLayout({
       >
         <Providers>
           <AppSidebar />
-          <main className="flex-1 h-full overflow-auto flex flex-col">
+          <main className="flex-1 bg-white h-full overflow-auto flex flex-col">
             <AppHeader />
-            <div className="flex-1 bg-white overflow-auto pt-5 flex flex-col items-center justify-between min-h-[88vh] px-3">
+            <div className="flex-1 overflow-auto pt-5 flex flex-col items-center justify-between min-h-[88vh] px-3">
               {children}
               {/* <AppFooter /> */}
             </div>
