@@ -9,6 +9,7 @@ import { GotProductTypes } from "@/types/products";
 import { GotCategoryTypes } from "@/types/categories";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import Link from "next/link";
 
 export default function ShowMenuProducts() {
   const sectionRefs = useRef<Record<string, HTMLElement | null>>({});
@@ -63,13 +64,15 @@ export default function ShowMenuProducts() {
                 }}
                 className="mb-12 scroll-mt-24"
               >
-                <div className="flex flex-wrap items-center justify-between mb-6">
+                <div className="flex flex-wrap items-end justify-between mb-6">
                   <h2 className="text-2xl font-bold capitalize">
                     {category.name}
                   </h2>
-                  <Button variant="link" className="text-primary w-fit p-0">
-                    Barchasini ko'rish
-                  </Button>
+                  <Link href={"/products-filter"}>
+                    <Button variant="link" className="text-primary w-fit p-0">
+                      Barchasini ko'rish
+                    </Button>
+                  </Link>
                 </div>
                 <div className="grid gap-6 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                   {categoryProducts.map((product) => (
