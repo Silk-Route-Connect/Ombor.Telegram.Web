@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import React, { useState } from "react";
+import React, { useState, Suspense } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Drawer,
@@ -17,15 +17,13 @@ import { GotCategoryTypes } from "@/types/categories";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 
-export default function FiltersDrawer() {
-  const [open, setOpen] = useState(false);
+function FiltersDrawerContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const { data: categoriesData, isPending: categoriesLoading } =
-    useGetList<GotCategoryTypes[]>({
-      endpoint: CATEGORIES.GET_CATEGORIES,
-    });
+  const { data: categoriesData } = useGetList<GotCategoryTypes[]>({
+    endpoint: CATEGORIES.GET_CATEGORIES,
+  });
 
   const initialMin = searchParams.get("minPrice");
   const initialMax = searchParams.get("maxPrice");
@@ -68,14 +66,10 @@ export default function FiltersDrawer() {
     }
 
     router.push(`?${params.toString()}`);
-    setOpen(false);
   };
 
   return (
-    <Drawer open={open} onOpenChange={setOpen}>
-      <DrawerTrigger asChild>
-        <Button variant="outline">Filterlar</Button>
-      </DrawerTrigger>
+    <>
       <DrawerContent className="px-4 pb-6 pt-2">
         <DrawerHeader>
           <DrawerTitle>Narx bo‘yicha filter</DrawerTitle>
@@ -122,11 +116,31 @@ export default function FiltersDrawer() {
         </div>
 
         <div className="mt-6">
-          <Button onClick={applyFilters} className="w-full">
+          <Button
+            onClick={() => {
+              applyFilters();
+            }}
+            className="w-full"
+          >
             Qo‘llash
           </Button>
         </div>
       </DrawerContent>
+    </>
+  );
+}
+
+export default function FiltersDrawer() {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <Drawer open={open} onOpenChange={setOpen}>
+      <DrawerTrigger asChild>
+        <Button variant="outline">Filterlar</Button>
+      </DrawerTrigger>
+      <Suspense fallback={<div>Loading...</div>}>
+        <FiltersDrawerContent />
+      </Suspense>
     </Drawer>
   );
 }

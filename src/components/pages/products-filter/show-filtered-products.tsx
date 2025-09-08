@@ -36,12 +36,8 @@ export default function ShowFilteredProducts() {
     );
   }
 
-  if (!filteredProductsData || filteredProductsData.length == 0) {
-    return (
-      <>
-        <NoData />
-      </>
-    );
+  if (!filteredProductsData || filteredProductsData.length === 0) {
+    return <NoData />;
   }
 
   return (
