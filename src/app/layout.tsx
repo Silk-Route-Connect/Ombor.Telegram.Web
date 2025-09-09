@@ -6,6 +6,7 @@ import { AppSidebar } from "@/components/app-sidebar";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import AppHeader from "@/components/app-header";
 import AppFooter from "@/components/app-footer";
+import AppBottomNav from "@/components/app-bottomNav";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,6 +38,7 @@ export default function RootLayout({
                 <AppFooter />
               </div>
             </div>
+            <AppBottomNav/>
           </main>
         </Providers>
       </body>

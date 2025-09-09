@@ -75,7 +75,7 @@
     };
 
     return (
-      <div className="w-full my-5 sticky -top-5 z-50 bg-white/80 backdrop-blur-[1px]">
+      <div className="w-full my-5 sticky top-0 z-50 bg-white/80 backdrop-blur-[1px]">
         <ScrollArea ref={scrollAreaRef} className="w-full whitespace-nowrap py-2">
           <div className="flex gap-3 px-4">
             {isPending &&
