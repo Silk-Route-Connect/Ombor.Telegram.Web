@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 const navItems = [
   { href: "/", label: "Home", icon: Home },
   { href: "/products-filter", label: "Products", icon: Package },
-  { href: "/cart", label: "Cart", icon: ShoppingCart },
+  { href: "/user-cart", label: "Cart", icon: ShoppingCart },
 ];
 
 export default function AppBottomNav() {

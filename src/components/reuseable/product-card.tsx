@@ -14,6 +14,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Minus, Plus, ShoppingCart } from "lucide-react";
 import { motion } from "framer-motion";
 import { GotProductTypes } from "@/types/products";
+
 import noImg from "@/assets/no-image.png";
 
 export default function ProductCard({ product }: { product: GotProductTypes }) {
