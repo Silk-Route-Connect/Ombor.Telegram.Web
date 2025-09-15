@@ -2,6 +2,9 @@
 
 import CartProductCard from "@/components/reuseable/cart-product-card";
 import { GotProductTypes } from "@/types/products";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 const dummyCartItems: (GotProductTypes & { quantity: number })[] = [
   {
@@ -90,12 +93,59 @@ const dummyCartItems: (GotProductTypes & { quantity: number })[] = [
 ];
 
 export default function UserCart() {
+  const [cartItems, setCartItems] = useState(dummyCartItems);
+  const router = useRouter();
+
+  const updateQuantity = (id: number, newQuantity: number) => {
+    setCartItems((prev) =>
+      prev.map((item) =>
+        item.id === id ? { ...item, quantity: Math.max(newQuantity, 1) } : item
+      )
+    );
+  };
+
+  const deleteItem = (id: number) => {
+    setCartItems((prev) => prev.filter((item) => item.id !== id));
+  };
+
+  const total = cartItems.reduce(
+    (sum, item:any) => sum + item.salePrice * item.quantity,
+    0
+  );
+
+  const handleOrder = () => {
+    router.push("/new-orders");
+  };
+
   return (
-    <div className="p-4 space-y-4">
-      <h1 className="text-xl font-bold">Your Cart</h1>
-      {dummyCartItems.map((product) => (
-        <CartProductCard key={product.id} product={product} />
-      ))}
+    <div className="p-4 space-y-6 max-w-3xl mx-auto bg-gray-50 rounded-xl shadow-lg">
+      <h1 className="text-2xl font-bold text-gray-800">Sizning Savatingiz</h1>
+      {cartItems.length === 0 ? (
+        <p className="text-center text-gray-500">Savat bo'sh</p>
+      ) : (
+        cartItems.map((item:any) => (
+          <CartProductCard
+            key={item.id}
+            product={item}
+            quantity={item.quantity}
+            onQuantityChange={(newQty) => updateQuantity(item.id, newQty)}
+            onDelete={() => deleteItem(item.id)}
+          />
+        ))
+      )}
+      <div className="border-t border-gray-200 pt-4">
+        <div className="flex justify-between text-lg font-semibold text-gray-800">
+          <span>Jami:</span>
+          <span>{total.toLocaleString()} so'm</span>
+        </div>
+      </div>
+      <Button
+        className="w-full h-12 text-lg font-bold bg-green-600 hover:bg-green-700 text-white rounded-lg shadow-md"
+        onClick={handleOrder}
+        disabled={cartItems.length === 0}
+      >
+        Buyurtma berish
+      </Button>
     </div>
   );
 }

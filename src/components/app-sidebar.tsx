@@ -9,6 +9,7 @@ import {
   SidebarHeader,
   SidebarMenu,
   SidebarMenuItem,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import Image from "next/image";
 import { Separator } from "./ui/separator";
@@ -23,7 +24,17 @@ import {
 } from "@/components/ui/accordion";
 import { usePathname } from "next/navigation";
 
+type SidebarItemType = {
+  title: string;
+  url: string;
+  icon?: React.ElementType;
+  subItems?: { title: string; url: string }[];
+};
+
 export function AppSidebar() {
+  const path = usePathname();
+  const { toggleSidebar, open } = useSidebar();
+
   return (
     <Sidebar>
       <SidebarHeader>
@@ -39,92 +50,85 @@ export function AppSidebar() {
       <Separator className="mt-3" />
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Pages label</SidebarGroupLabel>
+          {/* <SidebarGroupLabel>Pages label</SidebarGroupLabel> */}
           <SidebarGroupContent>
             <SidebarMenu className="pr-5">
-              {SidebarData?.map((sidebar, index) => {
-                const path = usePathname();
-
-                let isSidebarItemActive =
+              {SidebarData?.map((sidebar: SidebarItemType, index: number) => {
+                const isSidebarItemActive =
                   sidebar?.url === "/"
                     ? path === "/"
-                    : path.startsWith(sidebar?.url);
+                    : path.startsWith(sidebar?.url || "");
+
+                if (sidebar?.subItems?.length) {
+                  const isAnySubActive = sidebar.subItems.some((subItem) =>
+                    subItem?.url === "/"
+                      ? path === "/"
+                      : path.startsWith(subItem?.url || "")
+                  );
+
+                  return (
+                    <SidebarMenuItem key={index}>
+                      <Accordion
+                        type="single"
+                        collapsible
+                        defaultValue={
+                          isAnySubActive ? sidebar?.title : undefined
+                        }
+                      >
+                        <AccordionItem value={sidebar?.title}>
+                          <AccordionTrigger
+                            className={`pl-7 mb-2 text-left transition ${
+                              isAnySubActive
+                                ? "bg-primary/20 font-semibold text-primary"
+                                : ""
+                            }`}
+                          >
+                            {sidebar?.title}
+                          </AccordionTrigger>
+                          <AccordionContent>
+                            {sidebar.subItems.map((subItem, subIndex) => {
+                              const isSidebarSubItemActive =
+                                subItem?.url === "/"
+                                  ? path === "/"
+                                  : path.startsWith(subItem?.url || "");
+
+                              return (
+                                <Link key={subIndex} href={subItem?.url || "#"}>
+                                  <Button
+                                    onClick={() => toggleSidebar()}
+                                    className="mb-2 w-[90%]"
+                                    variant={
+                                      isSidebarSubItemActive
+                                        ? "navActive"
+                                        : "nav"
+                                    }
+                                  >
+                                    {sidebar.icon && <sidebar.icon />}
+                                    {subItem.title}
+                                  </Button>
+                                </Link>
+                              );
+                            })}
+                          </AccordionContent>
+                        </AccordionItem>
+                      </Accordion>
+                    </SidebarMenuItem>
+                  );
+                }
 
                 return (
-                  <div key={index}>
-                    {sidebar?.subItems ? (
-                      <SidebarMenuItem key={sidebar?.subItems[0]?.url}>
-                        <Accordion
-                          type="single"
-                          collapsible
-                          defaultValue={
-                            sidebar?.subItems?.some((subItem) =>
-                              subItem?.url === "/"
-                                ? path === "/"
-                                : path.startsWith(subItem?.url)
-                            )
-                              ? sidebar?.title
-                              : undefined
-                          }
-                        >
-                          <AccordionItem value={sidebar?.title}>
-                            <AccordionTrigger
-                              className={`pl-7 mb-2 text-left transition ${
-                                sidebar?.subItems?.some((subItem) =>
-                                  subItem?.url === "/"
-                                    ? path === "/"
-                                    : path.startsWith(subItem?.url)
-                                )
-                                  ? "bg-primary/20 font-semibold text-primary"
-                                  : ""
-                              }`}
-                            >
-                              {sidebar?.title}
-                            </AccordionTrigger>
-                            <AccordionContent>
-                              {sidebar?.subItems?.map((subItem) => {
-                                const isSidebarSubItemActive =
-                                  subItem?.url === "/"
-                                    ? path === "/"
-                                    : path.startsWith(subItem?.url);
-
-                                return (
-                                  <>
-                                    <Link
-                                      key={subItem?.url}
-                                      href={subItem?.url}
-                                    >
-                                      <Button
-                                        className="mb-2 w-[90%]"
-                                        variant={
-                                          isSidebarSubItemActive
-                                            ? "navActive"
-                                            : "nav"
-                                        }
-                                      >
-                                        <sidebar.icon /> {subItem?.title}
-                                      </Button>
-                                    </Link>
-                                  </>
-                                );
-                              })}
-                            </AccordionContent>
-                          </AccordionItem>
-                        </Accordion>
-                      </SidebarMenuItem>
-                    ) : (
-                      <SidebarMenuItem key={sidebar?.url}>
-                        <Link href={sidebar?.url}>
-                          <Button
-                            className="mb-2"
-                            variant={isSidebarItemActive ? "navActive" : "nav"}
-                          >
-                            <sidebar.icon /> {sidebar?.title}
-                          </Button>
-                        </Link>
-                      </SidebarMenuItem>
-                    )}
-                  </div>
+                  <SidebarMenuItem key={index}>
+                    <Link href={sidebar?.url || "#"}>
+                      <Button
+                        onClick={() => toggleSidebar()}
+                        className="mb-2"
+                        variant={isSidebarItemActive ? "navActive" : "nav"}
+                      >
+                        {sidebar.icon && <sidebar.icon />}
+                        {sidebar.title}
+                      </Button>
+                    </Link>
+                  </SidebarMenuItem>
                 );
               })}
             </SidebarMenu>

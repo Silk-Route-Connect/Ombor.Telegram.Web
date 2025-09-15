@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, Suspense } from "react";
+import React, { useState, Suspense, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Drawer,
@@ -17,7 +17,7 @@ import { GotCategoryTypes } from "@/types/categories";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 
-function FiltersDrawerContent() {
+function FiltersDrawerContent({ onClose }: { onClose: () => void }) {
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -25,20 +25,24 @@ function FiltersDrawerContent() {
     endpoint: CATEGORIES.GET_CATEGORIES,
   });
 
-  const initialMin = searchParams.get("minPrice");
-  const initialMax = searchParams.get("maxPrice");
-  const initialCategoryId = searchParams.get("categoryId");
-
   const MAX_VALUE = 1000000;
 
-  const [priceRange, setPriceRange] = useState<number[]>([
-    initialMin ? parseInt(initialMin) : 0,
-    initialMax ? parseInt(initialMax) : MAX_VALUE,
-  ]);
+  const [priceRange, setPriceRange] = useState<number[]>([0, MAX_VALUE]);
+  const [selectedCategory, setSelectedCategory] = useState<string | undefined>(undefined);
 
-  const [selectedCategory, setSelectedCategory] = useState<string | undefined>(
-    initialCategoryId || undefined
-  );
+  // URL dan qiymatlarni yangilab turish
+  useEffect(() => {
+    const minPrice = searchParams.get("minPrice");
+    const maxPrice = searchParams.get("maxPrice");
+    const categoryId = searchParams.get("categoryId");
+
+    setPriceRange([
+      minPrice ? parseInt(minPrice) : 0,
+      maxPrice ? parseInt(maxPrice) : MAX_VALUE,
+    ]);
+
+    setSelectedCategory(categoryId || undefined);
+  }, [searchParams, MAX_VALUE]);
 
   const handlePriceChange = (values: number[]) => {
     setPriceRange(values);
@@ -66,13 +70,21 @@ function FiltersDrawerContent() {
     }
 
     router.push(`?${params.toString()}`);
+    onClose();
+  };
+
+  const clearFilters = () => {
+    setPriceRange([0, MAX_VALUE]);
+    setSelectedCategory(undefined);
+    router.push(window.location.pathname);
+    // onClose();
   };
 
   return (
     <>
       <DrawerContent className="px-4 pb-6 pt-2">
         <DrawerHeader>
-          <DrawerTitle>Narx bo‘yicha filter</DrawerTitle>
+          <DrawerTitle>Narx bo'yicha filter</DrawerTitle>
         </DrawerHeader>
 
         <div className="mt-4">
@@ -94,7 +106,7 @@ function FiltersDrawerContent() {
           </div>
         </div>
 
-        <div className="mt-8">
+        <div className="mt-8 overflow-y-auto">
           <DrawerTitle className="mb-2">Kategoriya</DrawerTitle>
           <RadioGroup
             value={selectedCategory}
@@ -115,14 +127,12 @@ function FiltersDrawerContent() {
           </RadioGroup>
         </div>
 
-        <div className="mt-6">
-          <Button
-            onClick={() => {
-              applyFilters();
-            }}
-            className="w-full"
-          >
-            Qo‘llash
+        <div className="mt-6 flex gap-2">
+          <Button onClick={clearFilters} variant="outline" className="flex-1">
+            Tozalash
+          </Button>
+          <Button onClick={applyFilters} className="flex-1">
+            Qo'llash
           </Button>
         </div>
       </DrawerContent>
@@ -139,7 +149,7 @@ export default function FiltersDrawer() {
         <Button variant="outline">Filterlar</Button>
       </DrawerTrigger>
       <Suspense fallback={<div>Loading...</div>}>
-        <FiltersDrawerContent />
+        <FiltersDrawerContent onClose={() => setOpen(false)} />
       </Suspense>
     </Drawer>
   );

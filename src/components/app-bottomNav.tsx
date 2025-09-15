@@ -2,23 +2,24 @@
 
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { Home, ShoppingCart, Package } from "lucide-react";
+import { Home, ShoppingCart, Package, ListOrdered, ListCollapse, NotebookText } from "lucide-react";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { useSidebar } from "./ui/sidebar";
 
 const navItems = [
   { href: "/", label: "Home", icon: Home },
   { href: "/products-filter", label: "Products", icon: Package },
   { href: "/user-cart", label: "Cart", icon: ShoppingCart },
+  { href: "/new-orders", label: "Orders", icon: NotebookText },
 ];
 
 export default function AppBottomNav() {
   const pathname = usePathname();
   const [hide, setHide] = useState(false);
-
-  console.log("hide:", hide);
-
+    const { toggleSidebar, open } = useSidebar();
+  
   return (
     <motion.nav
       initial={{ y: 100 }}
@@ -47,6 +48,13 @@ export default function AppBottomNav() {
             </Link>
           );
         })}
+         <Button onClick={()=> toggleSidebar()}
+         variant={'ghost'}
+                size="icon"
+                className="rounded-full"
+              >
+                <ListCollapse className="h-5 w-5" />
+              </Button>
       </div>
     </motion.nav>
   );
