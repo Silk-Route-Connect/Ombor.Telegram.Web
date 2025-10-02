@@ -14,9 +14,10 @@ type OrderCardProps = {
     total: number;
     status: "pending" | "processing" | "shipped" | "delivered" | "canceled";
   };
+  history?: boolean;
 };
 
-export default function OrderCard({ order }: OrderCardProps) {
+export default function OrderCard({ order, history }: OrderCardProps) {
   const router = useRouter();
 
   const onCardClick = () => {
