@@ -1,5 +1,6 @@
 import {
   ChartBarStacked,
+  CircleDollarSign,
   History,
   Settings,
   TableProperties,
@@ -10,6 +11,11 @@ export const SidebarData = [
     title: "Buyurtmalar tarixi",
     url: "/order-history",
     icon: History,
+  },
+   {
+    title: "Balance",
+    url: "/user/balance",
+    icon: CircleDollarSign,
   },
   // {
   //   title: "Demo tables",

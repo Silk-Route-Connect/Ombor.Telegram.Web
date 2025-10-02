@@ -55,7 +55,9 @@ export default function ProductCard({ product }: { product: GotProductTypes }) {
             onTouchEnd={onTouchEnd}
           >
             <img
-              src={images[slideIndex].thumbnailUrl ?? noImg.src}
+              src={`https://miraziz-002-site1.ktempurl.com/${
+                images[slideIndex].thumbnailUrl ?? noImg.src
+              }`}
               alt={product.name}
               onError={(e) => (e.currentTarget.src = noImg.src)}
               className="w-full h-32 object-cover transition-transform duration-500 group-hover:scale-105"
@@ -162,7 +164,9 @@ export default function ProductCard({ product }: { product: GotProductTypes }) {
                   onTouchEnd={onTouchEnd}
                 >
                   <img
-                    src={images[slideIndex].thumbnailUrl ?? noImg.src}
+                    src={`https://miraziz-002-site1.ktempurl.com/${
+                      images[slideIndex].thumbnailUrl ?? noImg.src
+                    }`}
                     alt={product.name}
                     onError={(e) => (e.currentTarget.src = noImg.src)}
                     className="w-full h-48 object-cover transition-transform duration-500"

@@ -15,7 +15,7 @@ export default function NotificationsPages() {
     <>
       <div>
         <h1 className="text-3xl md:text-5xl font-bold tracking-tight text-white">
-          Notifications page UI
+          Bildirishnomalar
         </h1>
         <div className="mb-5">
           <NotificationsList />

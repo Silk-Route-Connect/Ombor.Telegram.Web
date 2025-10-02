@@ -22,6 +22,7 @@ import { cn } from "@/lib/utils";
 
 export default function AppHeader() {
   const [searchValue, setSearchValue] = useState("");
+  const [open, setOpen] = useState(false);
 
   return (
     <div className="flex items-center justify-between gap-4 py-2 border-b shadow-md roudned px-3 rounded-b-xl">
@@ -46,8 +47,8 @@ export default function AppHeader() {
           </Link>
           <ModeToggle />
         </div>
-        <DropdownMenu>
-          <DropdownMenuTrigger>
+        <DropdownMenu open={open} onOpenChange={setOpen}>
+          <DropdownMenuTrigger onClick={() => setOpen(!open)}>
             <Avatar className="cursor-pointer">
               <AvatarImage src="/defaults/default-user.png" />
               <AvatarFallback>MM</AvatarFallback>
@@ -55,25 +56,26 @@ export default function AppHeader() {
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-56" align="end">
             <DropdownMenuLabel>
-              <div className="flex items-center gap-2">
-                <Image
-                  alt="default user"
-                  src={"/defaults/default-user.png"}
-                  width={40}
-                  height={40}
-                  className="rounded-full"
-                />
-                <p className="text-sm font-medium leading-tight line-clamp-2">
-                  Muxsinjon Maxsudovich
-                </p>
-              </div>
+              <Link
+                onClick={() => setOpen(false)}
+                href="/user/profile"
+                className="w-full"
+              >
+                <div className="flex items-center gap-2">
+                  <Image
+                    alt="default user"
+                    src={"/defaults/default-user.png"}
+                    width={40}
+                    height={40}
+                    className="rounded-full"
+                  />
+                  <p className="text-sm font-medium leading-tight line-clamp-2">
+                    Muxsinjon Maxsudovich
+                  </p>
+                </div>
+              </Link>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <Link href="/user/profile" className="w-full">
-                Profile
-              </Link>
-            </DropdownMenuItem>
             <div className="flex flex-row items-center justify-between gap-2 lg:hidden px-2 mt-2">
               <Link href={"/user/notifications"}>
                 <Button
@@ -92,11 +94,8 @@ export default function AppHeader() {
               </Link>
               <ModeToggle />
             </div>
-            <DropdownMenuItem className="mt-4">
-              <Button
-                variant="destructive"
-                className="w-full flex justify-between"
-              >
+            <DropdownMenuItem onClick={() => setOpen(false)} className="mt-7">
+              <Button variant="destructive" className="w-full">
                 Logout <LogOut className="size-4 text-white" />
               </Button>
             </DropdownMenuItem>

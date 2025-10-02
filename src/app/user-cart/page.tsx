@@ -109,12 +109,12 @@ export default function UserCart() {
   };
 
   const total = cartItems.reduce(
-    (sum, item:any) => sum + item.salePrice * item.quantity,
+    (sum, item: any) => sum + item.salePrice * item.quantity,
     0
   );
 
   const handleOrder = () => {
-    router.push("/new-orders");
+    router.push("/user-cart/confirm");
   };
 
   return (
@@ -123,7 +123,7 @@ export default function UserCart() {
       {cartItems.length === 0 ? (
         <p className="text-center text-gray-500">Savat bo'sh</p>
       ) : (
-        cartItems.map((item:any) => (
+        cartItems.map((item: any) => (
           <CartProductCard
             key={item.id}
             product={item}

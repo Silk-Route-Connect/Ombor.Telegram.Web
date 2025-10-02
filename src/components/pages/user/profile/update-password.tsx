@@ -25,30 +25,23 @@ import { Input } from "@/components/ui/input";
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 
-// form schemas
 const formSchema = z
   .object({
     oldPassword: z
       .string()
-      .min(6, { message: "Password must be at least 6 characters long." })
-      .max(50, {
-        message: "Password must not exceed 50 characters.",
-      }),
+      .min(6, { message: "Parol kamida 6 ta belgidan iborat bo‘lishi kerak." })
+      .max(50, { message: "Parol 50 ta belgidan oshmasligi kerak." }),
     newPassword: z
       .string()
-      .min(6, { message: "Password must be at least 6 characters long." })
-      .max(50, {
-        message: "Password must not exceed 50 characters.",
-      }),
+      .min(6, { message: "Parol kamida 6 ta belgidan iborat bo‘lishi kerak." })
+      .max(50, { message: "Parol 50 ta belgidan oshmasligi kerak." }),
     confirmPassword: z
       .string()
-      .min(6, { message: "Password must be at least 6 characters long." })
-      .max(50, {
-        message: "Password must not exceed 50 characters.",
-      }),
+      .min(6, { message: "Parol kamida 6 ta belgidan iborat bo‘lishi kerak." })
+      .max(50, { message: "Parol 50 ta belgidan oshmasligi kerak." }),
   })
   .refine((data) => data.newPassword === data.confirmPassword, {
-    message: "Passwords do not match.",
+    message: "Parollar mos kelmadi.",
     path: ["confirmPassword"],
   });
 
@@ -68,55 +61,63 @@ export default function ChangePassword() {
   });
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    // handle password update logic here
+    // parolni o‘zgartirish logikasi shu yerda bo‘ladi
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <div className="max-w-[300px]">
-          <Button onClick={() => setIsOpen(true)}>Change Password</Button>
-        </div>
+        <Button
+          onClick={() => setIsOpen(true)}
+          className="bg-primary text-white hover:bg-primary/90"
+        >
+          Parolni o‘zgartirish
+        </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[450px] rounded-2xl shadow-lg">
         <DialogHeader>
-          <DialogTitle>Change Password</DialogTitle>
-          <DialogDescription>
-            Choose a password that's easy to remember and secure. Store it
-            somewhere safe if needed.
+          <DialogTitle className="text-lg sm:text-xl font-bold text-primary">
+            Parolni o‘zgartirish
+          </DialogTitle>
+          <DialogDescription className="text-sm text-muted-foreground">
+            Yodingizda qoladigan va xavfsiz kuchli parol tanlang.
           </DialogDescription>
         </DialogHeader>
         <div className="my-5">
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
               <FormField
                 control={form.control}
                 name="oldPassword"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Old Password</FormLabel>
+                    <FormLabel className="text-sm font-medium text-gray-700">
+                      Eski parol
+                    </FormLabel>
                     <FormControl>
                       <div className="relative">
                         <Input
                           type={showOldPassword ? "text" : "password"}
-                          placeholder="Enter your current password"
+                          placeholder="Joriy parolingizni kiriting"
                           {...field}
+                          className="pr-10"
                         />
                         <Button
                           type="button"
                           size="icon"
-                          className="absolute right-0 top-1/2 -translate-y-1/2"
+                          variant="ghost"
+                          className="absolute right-0 top-1/2 -translate-y-1/2 text-gray-500 hover:text-primary"
                           onClick={() => setShowOldPassword(!showOldPassword)}
                         >
                           {showOldPassword ? (
-                            <EyeOff className="h-4 w-4 text-muted-foreground" />
+                            <EyeOff className="h-4 w-4" />
                           ) : (
-                            <Eye className="h-4 w-4 text-muted-foreground" />
+                            <Eye className="h-4 w-4" />
                           )}
                         </Button>
                       </div>
                     </FormControl>
-                    <FormMessage className="text-sm text-destructive mt-1" />
+                    <FormMessage className="text-xs text-destructive mt-1" />
                   </FormItem>
                 )}
               />
@@ -126,29 +127,33 @@ export default function ChangePassword() {
                 name="newPassword"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>New Password</FormLabel>
+                    <FormLabel className="text-sm font-medium text-gray-700">
+                      Yangi parol
+                    </FormLabel>
                     <FormControl>
                       <div className="relative">
                         <Input
                           type={showNewPassword ? "text" : "password"}
-                          placeholder="Enter a new password"
+                          placeholder="Yangi parolni kiriting"
                           {...field}
+                          className="pr-10"
                         />
                         <Button
                           type="button"
                           size="icon"
-                          className="absolute right-0 top-1/2 -translate-y-1/2"
+                          variant="ghost"
+                          className="absolute right-0 top-1/2 -translate-y-1/2 text-gray-500 hover:text-primary"
                           onClick={() => setShowNewPassword(!showNewPassword)}
                         >
                           {showNewPassword ? (
-                            <EyeOff className="h-4 w-4 text-muted-foreground" />
+                            <EyeOff className="h-4 w-4" />
                           ) : (
-                            <Eye className="h-4 w-4 text-muted-foreground" />
+                            <Eye className="h-4 w-4" />
                           )}
                         </Button>
                       </div>
                     </FormControl>
-                    <FormMessage className="text-sm text-destructive mt-1" />
+                    <FormMessage className="text-xs text-destructive mt-1" />
                   </FormItem>
                 )}
               />
@@ -158,49 +163,56 @@ export default function ChangePassword() {
                 name="confirmPassword"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Confirm Password</FormLabel>
+                    <FormLabel className="text-sm font-medium text-gray-700">
+                      Parolni tasdiqlash
+                    </FormLabel>
                     <FormControl>
                       <div className="relative">
                         <Input
                           type={showConfirmPassword ? "text" : "password"}
-                          placeholder="Must match the new password"
+                          placeholder="Yangi parolni qayta kiriting"
                           {...field}
+                          className="pr-10"
                         />
                         <Button
                           type="button"
                           size="icon"
-                          className="absolute right-0 top-1/2 -translate-y-1/2"
+                          variant="ghost"
+                          className="absolute right-0 top-1/2 -translate-y-1/2 text-gray-500 hover:text-primary"
                           onClick={() =>
                             setShowConfirmPassword(!showConfirmPassword)
                           }
                         >
                           {showConfirmPassword ? (
-                            <EyeOff className="h-4 w-4 text-muted-foreground" />
+                            <EyeOff className="h-4 w-4" />
                           ) : (
-                            <Eye className="h-4 w-4 text-muted-foreground" />
+                            <Eye className="h-4 w-4" />
                           )}
                         </Button>
                       </div>
                     </FormControl>
-                    <FormMessage className="text-sm text-destructive mt-1" />
+                    <FormMessage className="text-xs text-destructive mt-1" />
                   </FormItem>
                 )}
               />
 
-              <DialogFooter className="flex items-center justify-between gap-5 pt-4">
+              <DialogFooter className="flex items-center justify-between gap-4 pt-4">
                 <Button
-                  className="w-[47%]"
                   type="button"
-                  variant="secondary"
+                  variant="outline"
+                  className="border border-gray-300 hover:border-primary hover:text-primary"
                   onClick={() => {
                     form.reset();
                     setIsOpen(false);
                   }}
                 >
-                  Cancel
+                  Bekor qilish
                 </Button>
-                <Button className="w-[47%]" type="submit">
-                  Change Password
+                <Button
+                  type="submit"
+                  className="bg-primary text-white hover:bg-primary/90"
+                >
+                  Saqlash
                 </Button>
               </DialogFooter>
             </form>
